@@ -1,4 +1,4 @@
-package br.com.matias.todolist.user;
+package br.com.matias.todolist.tasks;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,28 +11,22 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@Entity(name = "tb_users")
-public class UserModal {
+@Entity(name = "tb_tasks")
+public class TaskModal {
 
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
+    private String description;
 
-    @Column(unique = true)
-    private String username;
-    private String name;
-    private String password;
+    @Column(length = 50)
+    private String title;
+    private LocalDateTime startAt;
+    private LocalDateTime endAt;
+    private String priority;
+
+    private UUID idUser;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    @Data
-    public class ErroResponse {
-        private String mensagem;
-
-        public ErroResponse(String mensagem) {
-            this.mensagem = mensagem;
-        }
-    }
-
 }
