@@ -1,6 +1,5 @@
-package br.com.matias.todolist.user;
+package br.com.matias.todolist.Response;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

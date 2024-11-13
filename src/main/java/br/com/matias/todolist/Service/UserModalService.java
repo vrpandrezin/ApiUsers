@@ -1,4 +1,4 @@
-package br.com.matias.todolist.user;
+package br.com.matias.todolist.Service;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @Entity(name = "tb_users")
-public class UserModal {
+public class UserModalService {
 
     @Id
     @GeneratedValue(generator = "UUID")
