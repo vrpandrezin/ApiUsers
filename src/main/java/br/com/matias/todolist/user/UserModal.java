@@ -22,6 +22,7 @@ public class UserModal {
     private String username;
     private String name;
     private String password;
+    private String email;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -31,6 +32,16 @@ public class UserModal {
         private String mensagem;
 
         public ErroResponse(String mensagem) {
+
+            this.mensagem = mensagem;
+        }
+    }
+
+    @Data
+    public class ErroDelete {
+        private String mensagem;
+
+        public ErroDelete(String mensagem) {
             this.mensagem = mensagem;
         }
     }
