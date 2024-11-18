@@ -49,6 +49,22 @@ public class UserService {
         return null;
     }
 
+    public UserDTO updateUser(UUID userID, UserModal userModal) {
+        Optional<UserModal> user = userRepository.findById(userID);
+
+        if (user.isPresent()) {
+            user.get().setUsername(userModal.getUsername() != null ? userModal.getUsername() : user.get().getUsername());
+            user.get().setName(userModal.getName() != null ? userModal.getName() : user.get().getName());
+            user.get().setPassword(userModal.getPassword() != null ? userModal.getPassword() : user.get().getPassword());
+            user.get().setEmail(userModal.getEmail() != null ? userModal.getEmail() : user.get().getEmail());
+
+            userRepository.save(user.get());
+            return new UserDTO(user.get().getId(), user.get().getUsername(), user.get().getName(), user.get().getEmail());
+        }
+
+        return null;
+    }
+
     public Boolean deletaUsuarioDoBanco(UUID userId) {
         Optional<UserModal> user = userRepository.findById(userId);
 
