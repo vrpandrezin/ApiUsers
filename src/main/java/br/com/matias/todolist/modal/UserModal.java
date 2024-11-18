@@ -1,49 +1,36 @@
-package br.com.matias.todolist.Service;
+package br.com.matias.todolist.modal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "tb_users")
-public class UserModalService {
+public class UserModal {
 
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @Column(unique = true)
     private String username;
     private String name;
     private String password;
+
+    @Column(unique = true)
     private String email;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    @Data
-    public class ErroResponse {
-        private String mensagem;
-
-        public ErroResponse(String mensagem) {
-
-            this.mensagem = mensagem;
-        }
-    }
-
-    @Data
-    public class ErroDelete {
-        private String mensagem;
-
-        public ErroDelete(String mensagem) {
-            this.mensagem = mensagem;
-        }
-    }
-
 }
