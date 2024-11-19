@@ -22,7 +22,10 @@ public class UserService {
     public ErroResponse validaDadosDeCriacaoDoUsuario(UserModal userModal) {
 
         if (userRepository.findByUsername(userModal.getUsername()) != null) {
-            return new ErroResponse("Usuário já cadastrado.");
+            return new ErroResponse("Username já cadastrado.");
+        }
+        if (userRepository.findByEmail(userModal.getEmail()) != null) {
+            return new ErroResponse("E-mail já cadastrado.");
         }
         if (userModal.getName() == null || userModal.getName().isEmpty()) {
             return new ErroResponse("Preencha o nome do usuário.");
@@ -45,14 +48,17 @@ public class UserService {
         if (erro != null) {
             return erro;
         }
+        try {
+            String passwordHash = BCrypt.withDefaults().hashToString(12, userModal
+                    .getPassword().toCharArray());
+            userModal.setPassword(passwordHash);
 
-        String passwordHash = BCrypt.withDefaults().hashToString(12, userModal
-                .getPassword().toCharArray());
-        userModal.setPassword(passwordHash);
+            UserModal user = userRepository.save(userModal);
 
-        UserModal user = userRepository.save(userModal);
-
-        return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getEmail());
+            return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getEmail());
+        } catch (Exception e) {
+            return new ErroResponse("Erro ao salvar os dados.");
+        }
     }
 
     public Boolean deletaUsuarioDoBanco(UUID userId) {
