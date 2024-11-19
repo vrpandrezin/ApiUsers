@@ -2,7 +2,7 @@
 
 ### Endpoints:
 
-- [**GET**](github.com/vrpandrezin) (/users/userList)
-- [**POST**](github.com/vrpandrezin) (/users/addUser)
-- [**PUT**](github.com/vrpandrezin) (/users/updateUser/{id})
-- [**DELETE**](github.com/vrpandrezin) (/users/remUser/{id})
+- [**GET**]() (/users/userList)
+- [**POST**]() (/users/addUser)
+- [**PUT**]() (/users/updateUser/{id})
+- [**DELETE**]() (/users/remUser/{id})
