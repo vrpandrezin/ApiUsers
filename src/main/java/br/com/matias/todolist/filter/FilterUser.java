@@ -1,6 +1,7 @@
 package br.com.matias.todolist.filter;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import br.com.matias.todolist.Response.ErroResponse;
 import br.com.matias.todolist.repository.IUserRepository;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
