@@ -16,40 +16,43 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-        @Autowired
-        private IUserRepository userRepository;
+    @Autowired
+    private IUserRepository userRepository;
 
-        public ErroResponse validaDadosDeCriacaoDoUsuario(UserModal userModal) {
+    public ErroResponse validaDadosDeCriacaoDoUsuario(UserModal userModal) {
 
-            if (userRepository.findByUsername(userModal.getUsername()) != null) {
-                return new ErroResponse("Usuário já cadastrado.");
-            }
-            if (userModal.getName() == null || userModal.getName().isEmpty()) {
-                return new ErroResponse("Preencha o nome do usuário.");
-            }
-            if (userModal.getUsername() == null || userModal.getUsername().isEmpty()) {
-                return new ErroResponse("Preencha o username.");
-            }
-            if (userModal.getPassword() == null || userModal.getPassword().isEmpty()) {
-                return new ErroResponse("Preencha a senha.");
-            }
-            if (userModal.getEmail() == null || userModal.getEmail().isEmpty()) {
-                return new ErroResponse("Preencha o e-mail.");
-            }
-            return null;
+        if (userRepository.findByUsername(userModal.getUsername()) != null) {
+            return new ErroResponse("Usuário já cadastrado.");
         }
-
-    public UserDTO createUser(UserModal userModal) {
-        if (validaDadosDeCriacaoDoUsuario(userModal) == null) {
-            String passwordHash = BCrypt.withDefaults().hashToString(12, userModal
-                    .getPassword().toCharArray());
-            userModal.setPassword(passwordHash);
-
-            UserModal user = userRepository.save(userModal);
-
-            return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getEmail());
+        if (userModal.getName() == null || userModal.getName().isEmpty()) {
+            return new ErroResponse("Preencha o nome do usuário.");
+        }
+        if (userModal.getUsername() == null || userModal.getUsername().isEmpty()) {
+            return new ErroResponse("Preencha o username.");
+        }
+        if (userModal.getPassword() == null || userModal.getPassword().isEmpty()) {
+            return new ErroResponse("Preencha a senha.");
+        }
+        if (userModal.getEmail() == null || userModal.getEmail().isEmpty()) {
+            return new ErroResponse("Preencha o e-mail.");
         }
         return null;
+    }
+
+    public Object createUser(UserModal userModal) {
+        ErroResponse erro = validaDadosDeCriacaoDoUsuario(userModal);
+
+        if (erro != null) {
+            return erro;
+        }
+
+        String passwordHash = BCrypt.withDefaults().hashToString(12, userModal
+                .getPassword().toCharArray());
+        userModal.setPassword(passwordHash);
+
+        UserModal user = userRepository.save(userModal);
+
+        return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getEmail());
     }
 
     public Boolean deletaUsuarioDoBanco(UUID userId) {
@@ -65,7 +68,8 @@ public class UserService {
     public List<UserDTO> findUsers() {
         List<UserModal> usersList = userRepository.findAll();
         List<UserDTO> usersDTOList = new ArrayList<>();
-        usersList.forEach(user -> usersDTOList.add(new UserDTO(user.getId(), user.getUsername(), user.getName(), user.getEmail())));
+        usersList.forEach(user -> usersDTOList.add(new UserDTO(user.getId(), user.getName(),
+                user.getUsername(), user.getEmail())));
         return usersDTOList;
     }
 
@@ -114,8 +118,8 @@ public class UserService {
 
             return new UserDTO(
                     existingUser.getId(),
-                    existingUser.getUsername(),
                     existingUser.getName(),
+                    existingUser.getUsername(),
                     existingUser.getEmail()
             );
         }

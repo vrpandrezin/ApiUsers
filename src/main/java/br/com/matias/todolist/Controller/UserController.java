@@ -32,13 +32,14 @@ public class UserController {
     @PostMapping("/addUser")
     public ResponseEntity<?> createUser(@RequestBody UserModal userModal) {
         try {
-            UserDTO user = userService.createUser(userModal);
-            if (user != null) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponse("Usuário cadastrado.", user));
+            Object result = userService.createUser(userModal);
+
+            if (result instanceof ErroResponse) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
             }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse("Esse email já foi cadastrado."));
+            return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponse("Usuário cadastrado.", result));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse("Não foi possível cadastrar o usuário."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErroResponse("Ocorreu um erro na requisição."));
         }
     }
 
