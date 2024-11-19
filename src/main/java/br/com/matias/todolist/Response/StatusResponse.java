@@ -1,13 +1,17 @@
 package br.com.matias.todolist.Response;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-public class StatusResponse {
-
-    private String status;
-
-    public StatusResponse(String status) {
-        this.status = status;
-    }
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+    public class StatusResponse {
+        private String status;
+        private Object message;
 }
