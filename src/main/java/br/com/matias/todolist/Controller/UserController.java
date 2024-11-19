@@ -28,6 +28,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse("Não foi possível listar os usuários."));
         }
     }
+
     @PostMapping("/addUser")
     public ResponseEntity<?> createUser(@RequestBody UserModal userModal) {
         try {
@@ -40,6 +41,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse("Não foi possível cadastrar o usuário."));
         }
     }
+
     @DeleteMapping("/remUser/{userID}")
     public ResponseEntity<?> deleteUser(@PathVariable UUID userID) {
         try {
