@@ -129,6 +129,6 @@ public class UserService {
                     existingUser.getEmail()
             );
         }
-        return new ErroResponse("Usuário não encontrado.");
+        return new ErroResponse("ID não encontrado.");
     }
 }
