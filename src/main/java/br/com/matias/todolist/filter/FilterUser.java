@@ -31,7 +31,7 @@ public class FilterUser extends OncePerRequestFilter {
                 var authorization = request.getHeader("Authorization");
 
                 if (authorization == null || !authorization.startsWith("Basic ")) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Credenciais ausentes ou inválidas.");
+                    writeErrorResponse(response, "Não autorizado.", "Usuário inválido ou sem permissão.");
                     return;
                 }
 
@@ -41,7 +41,7 @@ public class FilterUser extends OncePerRequestFilter {
                 String[] credentials = authString.split(":");
 
                 if (credentials.length != 2) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Formato de credenciais inválido.");
+                    writeErrorResponse(response, "Não autorizado", "Formato de credenciais inválido.");
                     return;
                 }
 
@@ -50,21 +50,26 @@ public class FilterUser extends OncePerRequestFilter {
 
                 var user = this.userRepository.findByUsername(username);
                 if (user == null) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuário não encontrado.");
+                    writeErrorResponse(response, "Não autorizado.", "Usuário inválido ou sem permissão.");
                     return;
                 }
 
                 var storedPassword = user.getPassword();
                 if (storedPassword == null || !BCrypt.verifyer().verify(password.toCharArray(), storedPassword).verified) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Senha incorreta.");
+                    writeErrorResponse(response, "Não autorizado.", "Senha incorreta.");
                     return;
                 }
             }
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Ocorreu um erro interno no servidor.");
+            writeErrorResponse(response, "Erro interno", "Ocorreu um erro interno no servidor.");
         }
+    }
+    private void writeErrorResponse(HttpServletResponse response, String status, String message) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        String json = String.format("{\"status\": \"%s\", \"message\": \"%s\"}", status, message);
+        response.getWriter().write(json);
     }
 }
