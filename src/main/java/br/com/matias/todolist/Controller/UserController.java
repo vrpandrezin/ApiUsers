@@ -1,16 +1,16 @@
-package br.com.matias.todolist.controller;
+package br.com.matias.todolist.Controller;
 
 import br.com.matias.todolist.Response.ErroResponse;
 import br.com.matias.todolist.Response.StatusResponse;
+import br.com.matias.todolist.Service.UserService;
 import br.com.matias.todolist.modal.DTO.UserDTO;
 import br.com.matias.todolist.modal.UserModal;
-import br.com.matias.todolist.service.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -23,9 +23,12 @@ public class UserController {
     @GetMapping("/userList")
     public ResponseEntity<?> listUsers() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(new StatusResponse("Listagem de usuários", userService.findUsers()));
+            List<UserDTO> users = userService.findUsers();
+            return ResponseEntity.ok(users);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse("Não foi possível listar os usuários."));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new StatusResponse("Falha ao buscar.",
+                            "Nenhum usuário cadastrado no banco de dados."));
         }
     }
 
@@ -47,9 +50,9 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable UUID userID) {
         try {
             if (userService.deletaUsuarioDoBanco(userID)) {
-                return ResponseEntity.status(HttpStatus.OK).body(new StatusResponse("Usuário deletado.", "O usuário foi excluído."));
+                return ResponseEntity.status(HttpStatus.OK).body(new StatusResponse("Usuário deletado.", "O usuário foi removido do Banco de dados."));
             }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StatusResponse("Erro ao deletar usuário.", "O id informado não existe no Banco de Dados."));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StatusResponse("Erro ao deletar usuário.", "O id informado não existe no Banco de dados."));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroResponse("Não foi possível deletar o usuário."));
         }
