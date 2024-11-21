@@ -1,11 +1,12 @@
-package br.com.matias.todolist.service;
+package br.com.matias.todolist.Service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import br.com.matias.todolist.Repository.IUserRepository;
 import br.com.matias.todolist.Response.ErroResponse;
-import br.com.matias.todolist.repository.IUserRepository;
 import br.com.matias.todolist.modal.DTO.UserDTO;
 import br.com.matias.todolist.modal.UserModal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class UserService {
 
             UserModal user = userRepository.save(userModal);
 
-            return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getEmail());
+            return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getType(), user.getEmail());
         } catch (Exception e) {
             return new ErroResponse("Erro ao salvar os dados.");
         }
@@ -74,8 +75,11 @@ public class UserService {
     public List<UserDTO> findUsers() {
         List<UserModal> usersList = userRepository.findAll();
         List<UserDTO> usersDTOList = new ArrayList<>();
+        if (usersList.isEmpty()) {
+            throw new RuntimeException("Nenhum usuário cadastrado no banco de dados.");
+        }
         usersList.forEach(user -> usersDTOList.add(new UserDTO(user.getId(), user.getName(),
-                user.getUsername(), user.getEmail())));
+                user.getUsername(), user.getType(), user.getEmail())));
         return usersDTOList;
     }
 
@@ -126,6 +130,7 @@ public class UserService {
                     existingUser.getId(),
                     existingUser.getName(),
                     existingUser.getUsername(),
+                    existingUser.getType(),
                     existingUser.getEmail()
             );
         }

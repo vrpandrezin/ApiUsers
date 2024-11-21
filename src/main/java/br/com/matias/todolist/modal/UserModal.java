@@ -20,6 +20,7 @@ public class UserModal {
 
     private String name;
     private String password;
+    private String type;
 
     @Column(unique = true)
     private String email;
