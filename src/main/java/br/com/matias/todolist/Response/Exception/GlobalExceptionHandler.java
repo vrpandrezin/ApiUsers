@@ -1,4 +1,4 @@
-package br.com.matias.todolist.Response.Exception;
+package br.com.matias.todolist.response.Exception;
 
 import br.com.matias.todolist.Response.ErroResponse;
 import org.springframework.http.HttpStatus;
