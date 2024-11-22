@@ -2,7 +2,6 @@ package br.com.matias.todolist.filter;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import br.com.matias.todolist.Repository.IUserRepository;
-import br.com.matias.todolist.Response.ErroResponse;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,6 +56,11 @@ public class FilterUser extends OncePerRequestFilter {
                 var storedPassword = user.getPassword();
                 if (storedPassword == null || !BCrypt.verifyer().verify(password.toCharArray(), storedPassword).verified) {
                     writeErrorResponse(response, "Não autorizado.", "Senha inválida ou sem permissão.");
+                    return;
+                }
+
+                if (!"ADMIN".equalsIgnoreCase(user.getType())) {
+                    writeErrorResponse(response, "Autenticação negada.", "Usuário sem permissão.");
                     return;
                 }
             }

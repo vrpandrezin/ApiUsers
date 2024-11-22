@@ -1,12 +1,11 @@
-package br.com.matias.todolist.Service;
+package br.com.matias.todolist.service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import br.com.matias.todolist.Repository.IUserRepository;
-import br.com.matias.todolist.Response.ErroResponse;
+import br.com.matias.todolist.response.ErroResponse;
 import br.com.matias.todolist.modal.DTO.UserDTO;
 import br.com.matias.todolist.modal.UserModal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -53,6 +52,10 @@ public class UserService {
             String passwordHash = BCrypt.withDefaults().hashToString(12, userModal
                     .getPassword().toCharArray());
             userModal.setPassword(passwordHash);
+
+            if (userModal.getType() == null || userModal.getType().isEmpty()) {
+                userModal.setType("USER");
+            }
 
             UserModal user = userRepository.save(userModal);
 
