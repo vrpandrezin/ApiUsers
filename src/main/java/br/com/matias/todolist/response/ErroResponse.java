@@ -1,4 +1,4 @@
-package br.com.matias.todolist.Response;
+package br.com.matias.todolist.response;
 
 import lombok.Getter;
 import lombok.Setter;

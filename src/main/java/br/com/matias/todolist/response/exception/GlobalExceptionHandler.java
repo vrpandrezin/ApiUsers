@@ -1,6 +1,6 @@
 package br.com.matias.todolist.response.Exception;
 
-import br.com.matias.todolist.Response.ErroResponse;
+import br.com.matias.todolist.response.ErroResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

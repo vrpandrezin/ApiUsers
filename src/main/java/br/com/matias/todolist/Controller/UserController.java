@@ -1,8 +1,8 @@
-package br.com.matias.todolist.Controller;
+package br.com.matias.todolist.controller;
 
-import br.com.matias.todolist.Response.ErroResponse;
-import br.com.matias.todolist.Response.StatusResponse;
-import br.com.matias.todolist.Service.UserService;
+import br.com.matias.todolist.response.ErroResponse;
+import br.com.matias.todolist.response.StatusResponse;
+import br.com.matias.todolist.service.UserService;
 import br.com.matias.todolist.modal.DTO.UserDTO;
 import br.com.matias.todolist.modal.UserModal;
 import org.springframework.beans.factory.annotation.Autowired;

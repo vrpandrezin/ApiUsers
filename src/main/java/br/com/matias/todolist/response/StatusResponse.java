@@ -1,4 +1,4 @@
-package br.com.matias.todolist.Response;
+package br.com.matias.todolist.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
