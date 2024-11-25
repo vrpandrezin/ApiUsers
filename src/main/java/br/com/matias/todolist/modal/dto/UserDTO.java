@@ -1,4 +1,4 @@
-package br.com.matias.todolist.modal.DTO;
+package br.com.matias.todolist.modal.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +15,5 @@ public class UserDTO {
     private UUID id;
     private String name;
     private String username;
-    private String type;
     private String email;
 }

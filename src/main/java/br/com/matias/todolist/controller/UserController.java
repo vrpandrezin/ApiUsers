@@ -3,7 +3,7 @@ package br.com.matias.todolist.controller;
 import br.com.matias.todolist.response.ErroResponse;
 import br.com.matias.todolist.response.StatusResponse;
 import br.com.matias.todolist.service.UserService;
-import br.com.matias.todolist.modal.DTO.UserDTO;
+import br.com.matias.todolist.modal.dto.UserDTO;
 import br.com.matias.todolist.modal.UserModal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
