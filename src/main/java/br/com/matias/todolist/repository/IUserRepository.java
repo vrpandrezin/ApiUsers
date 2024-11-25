@@ -1,4 +1,4 @@
-package br.com.matias.todolist.Repository;
+package br.com.matias.todolist.repository;
 
 import br.com.matias.todolist.modal.UserModal;
 import org.springframework.data.jpa.repository.JpaRepository;
