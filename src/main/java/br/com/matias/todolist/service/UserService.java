@@ -1,9 +1,9 @@
 package br.com.matias.todolist.service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import br.com.matias.todolist.Repository.IUserRepository;
+import br.com.matias.todolist.repository.IUserRepository;
 import br.com.matias.todolist.response.ErroResponse;
-import br.com.matias.todolist.modal.DTO.UserDTO;
+import br.com.matias.todolist.modal.dto.UserDTO;
 import br.com.matias.todolist.modal.UserModal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +59,7 @@ public class UserService {
 
             UserModal user = userRepository.save(userModal);
 
-            return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getType(), user.getEmail());
+            return new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getEmail());
         } catch (Exception e) {
             return new ErroResponse("Erro ao salvar os dados.");
         }
@@ -82,7 +82,7 @@ public class UserService {
             throw new RuntimeException("Nenhum usuário cadastrado no banco de dados.");
         }
         usersList.forEach(user -> usersDTOList.add(new UserDTO(user.getId(), user.getName(),
-                user.getUsername(), user.getType(), user.getEmail())));
+                user.getUsername(), user.getEmail())));
         return usersDTOList;
     }
 
@@ -105,11 +105,12 @@ public class UserService {
                 return new ErroResponse("Informe o novo e-mail.");
             }
 
-            if (userModal.getEmail() != null) {
-                UserModal emailExists = userRepository.findByEmail(userModal.getEmail());
-                if (emailExists != null && !emailExists.getId().equals(userID)) {
-                    return new ErroResponse("O e-mail já está cadastrado no Banco de Dados.");
-                }
+            if (userModal.getEmail().equals(user.get().getEmail())) {
+                    return new ErroResponse("O e-mail já está cadastrado no Banco de dados.");
+            }
+
+            if (userModal.getUsername().equals(user.get().getUsername())) {
+                    return new ErroResponse("O username já existe no Banco de dados.");
             }
 
             if (userModal.getName() != null) {
@@ -126,14 +127,12 @@ public class UserService {
                 existingUser.setEmail(userModal.getEmail());
             }
 
-
             userRepository.save(existingUser);
 
             return new UserDTO(
                     existingUser.getId(),
                     existingUser.getName(),
                     existingUser.getUsername(),
-                    existingUser.getType(),
                     existingUser.getEmail()
             );
         }
